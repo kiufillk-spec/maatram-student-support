@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maatram | Student Support System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">MAATRAM<span>.</span></div>
+    <p>Student Support & Follow-up System</p>
+</header>
+
+<main class="container">
+
+    <!-- MAIN LOGIN PAGE -->
+    <section id="homePage" class="screen">
+        <div class="hero">
+            <div class="hero-icon">✦</div>
+            <p class="yellow-text">WELCOME TO MAATRAM</p>
+            <h1>Every Student<br>Deserves a <span>Mentor.</span></h1>
+            <p class="muted">
+                Connect with mentors, receive guidance
+                and build a better future.
+            </p>
+        </div>
+
+        <div class="role-container">
+
+            <button class="role-card" onclick="selectRole('student')">
+                <div class="role-icon">🎓</div>
+                <h2>Student Login</h2>
+                <p>Get guidance and support from mentors.</p>
+                <span>Continue →</span>
+            </button>
+
+            <button class="role-card" onclick="selectRole('mentor')">
+                <div class="role-icon">👨‍🏫</div>
+                <h2>Mentor Login</h2>
+                <p>Guide students and share your knowledge.</p>
+                <span>Continue →</span>
+            </button>
+
+        </div>
+    </section>
+
+
+    <!-- REGISTRATION / LOGIN -->
+    <section id="authPage" class="screen hidden">
+
+        <button class="back-btn" onclick="goHome()">← Back</button>
+
+        <div class="form-card">
+
+            <p class="yellow-text">MAATRAM ACCOUNT</p>
+            <h1 id="authTitle">Student Registration</h1>
+            <p class="muted" id="authSubtitle">
+                Create your account to continue.
+            </p>
+
+            <div class="mode-buttons">
+                <button type="button" id="registerTab"
+                    onclick="changeMode('register')">
+                    Register
+                </button>
+
+                <button type="button" id="loginTab"
+                    onclick="changeMode('login')">
+                    Login
+                </button>
+            </div>
+
+            <!-- REGISTER FORM -->
+            <form id="registerForm">
+
+                <label>Full Name</label>
+                <input type="text" id="regName"
+                    placeholder="Enter your name" required>
+
+                <label>Email Address</label>
+                <input type="email" id="regEmail"
+                    placeholder="example@gmail.com" required>
+
+                <label>Mobile Number</label>
+                <input type="tel" id="regPhone"
+                    placeholder="10-digit mobile number"
+                    pattern="[6-9][0-9]{9}"
+                    maxlength="10" required>
+
+                <label>Profile Photo (Optional)</label>
+                <input type="file" id="regPhoto"
+                    accept="image/*">
+
+                <!-- Only mentor sees this field -->
+                <div id="mentorFieldBox" class="hidden">
+                    <label>Which field can you help students with?</label>
+
+                    <select id="mentorField">
+                        <option value="">Select your expertise</option>
+                        <option value="academic">Academic Support</option>
+                        <option value="career">Career Guidance</option>
+                        <option value="scholarship">Scholarship Support</option>
+                        <option value="personal">Personal Guidance</option>
+                        <option value="technical">Technical Skills</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="main-btn">
+                    Continue to OTP Verification →
+                </button>
+
+            </form>
+
+
+            <!-- EXISTING USER LOGIN -->
+            <form id="loginForm" class="hidden">
+
+                <label>Registered Email Address</label>
+                <input type="email" id="loginEmail"
+                    placeholder="Enter your registered email"
+                    required>
+
+                <button type="submit" class="main-btn">
+                    Continue to Login →
+                </button>
+
+            </form>
+
+            <p class="small-note">
+                By continuing, you agree to use this platform
+                for student support and mentorship.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- OTP PAGE -->
+    <section id="otpPage" class="screen hidden">
+
+        <div class="form-card center">
+
+            <div class="role-icon">🔐</div>
+
+            <h1>Verify Your Account</h1>
+
+            <p class="muted">
+                Enter the verification code to continue.
+            </p>
+
+            <p id="otpDestination" class="yellow-text"></p>
+
+            <form id="otpForm">
+
+                <label>Enter OTP</label>
+
+                <input type="text" id="otpCode"
+                    placeholder="Enter 6-digit OTP"
+                    maxlength="6" required>
+
+                <button type="submit" class="main-btn">
+                    Verify & Continue
+                </button>
+
+            </form>
+
+            <p class="demo-note">
+                Prototype testing only: Demo OTP is 123456.
+                No real SMS is sent in this version.
+            </p>
+
+        </div>
+    </section>
+
+
+    <!-- DASHBOARD -->
+    <section id="dashboardPage" class="screen hidden">
+
+        <div class="dashboard-header">
+
+            <div>
+                <p class="yellow-text">MAATRAM DASHBOARD</p>
+                <h1 id="dashboardWelcome">Welcome!</h1>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+
+        <!-- PROFILE -->
+        <div class="profile-card">
+
+            <div class="profile-image" id="profileImage">
+                👤
+            </div>
+
+            <div class="profile-info">
+                <h2 id="profileName"></h2>
+                <p id="profileRole"></p>
+                <p id="profileEmail"></p>
+                <p id="profilePhone"></p>
+                <p id="profileExpertise"></p>
+            </div>
+
+            <button class="edit-btn" onclick="openEditProfile()">
+                ✎ Edit Profile
+            </button>
+
+        </div>
+
+
+        <!-- STUDENT DASHBOARD -->
+        <div id="studentDashboard" class="hidden">
+
+            <h2 class="section-title">Get Support</h2>
+
+            <div class="form-card">
+
+                <form id="requestForm">
+
+                    <label>Choose Support Category</label>
+
+                    <select id="supportCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="academic">Academic Support</option>
+                        <option value="career">Career Guidance</option>
+                        <option value="scholarship">Scholarship Support</option>
+                        <option value="personal">Personal Guidance</option>
+                        <option value="technical">Technical Skills</option>
+                    </select>
+
+                    <label>Describe Your Problem</label>
+
+                    <textarea id="supportProblem"
+                        rows="4"
+                        placeholder="Explain how a mentor can help you..."
+                        required></textarea>
+
+                    <button type="submit" class="main-btn">
+                        Find My Mentor →
+                    </button>
+
+                </form>
+
+            </div>
+
+            <h2 class="section-title">My Requests</h2>
+            <div id="studentRequests"></div>
+
+        </div>
+
+
+        <!-- MENTOR DASHBOARD -->
+        <div id="mentorDashboard" class="hidden">
+
+            <h2 class="section-title">Student Help Requests</h2>
+
+            <p class="muted">
+                Students who need support in your selected expertise.
+            </p>
+
+            <div id="mentorRequests"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EDIT PROFILE -->
+    <section id="editPage" class="screen hidden">
+
+        <button class="back-btn" onclick="showDashboard()">
+            ← Back to Dashboard
+        </button>
+
+        <div class="form-card">
+
+            <h1>Edit Your Profile</h1>
+
+            <form id="editForm">
+
+                <label>Full Name</label>
+                <input type="text" id="editName" required>
+
+                <label>Email Address</label>
+                <input type="email" id="editEmail" disabled>
+
+                <label>Mobile Number</label>
+                <input type="tel" id="editPhone"
+                    pattern="[6-9][0-9]{9}"
+                    maxlength="10" required>
+
+                <label>Change Profile Photo (Optional)</label>
+                <input type="file" id="editPhoto" accept="image/*">
+
+                <div id="editMentorFieldBox" class="hidden">
+                    <label>Helping Field</label>
+                    <select id="editMentorField">
+                        <option value="academic">Academic Support</option>
+                        <option value="career">Career Guidance</option>
+                        <option value="scholarship">Scholarship Support</option>
+                        <option value="personal">Personal Guidance</option>
+                        <option value="technical">Technical Skills</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="main-btn">
+                    Save Profile Changes
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer>
+    <h3>MAATRAM<span>.</span></h3>
+    <p>Empowering Students Through Mentorship</p>
+    <p>HackForge 2026–27 | MH26-04</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+
